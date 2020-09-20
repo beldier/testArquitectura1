@@ -5,18 +5,48 @@ public class Game{
     public Game(int[][] matrix){
         this.matrix=matrix;
     }
+    public int[][] play(char order){
+        switch (order){
+            case 'W':playUp(order);break;
+            case 'S':playDown(order);break;
 
-    public int [][] transformMatrix(char order){
-        if(order == 'W'){
-            int columnAmount = matrix[0].length;
-            for(int columnNumber=0;columnNumber<columnAmount;columnNumber++){
-                int[] column = getColumn(columnNumber);
-                column = transformArray(column);
-                replaceColumn(column,columnNumber);
-            }
         }
-        return matrix;
+        return this.matrix;
     }
+    public int[] compressArrayRight(int[] array){
+        int[] result = new int[array.length];
+        int indexResult = array.length-1;
+        for(int i=array.length-1;i>=0 ;i--){
+            int currentElement=array[i];
+            if(currentElement !=0)
+                result[indexResult--]=currentElement;
+        }
+        return result;
+    }
+    private int[][] playUp(char order) {
+        int columnAmount = matrix[0].length;
+        for (int columnNumber = 0; columnNumber < columnAmount; columnNumber++) {
+            int[] column = getColumn(columnNumber);
+            int[] compressed = compressArray(column);
+            column = transformArray(compressed);
+            replaceColumn(column, columnNumber);
+        }
+        return this.matrix;
+    }
+
+    private int[][] playDown(char order){
+        int columnAmount = matrix[0].length;
+        for(int columnNumber=0; columnNumber<columnAmount;columnNumber++){
+            int[] column = getColumn(columnNumber);
+            int[] compressed = compressArray(column);
+            column = transformArray(compressed);
+            column = compressArrayRight(column);
+            replaceColumn(column, columnNumber);
+        }
+        return this.matrix;
+    }
+
+
     private int[][] replaceColumn(int [] column,int columnNumber){
         for(int i=0;i<matrix.length;i++){
             matrix[i][columnNumber]=column[i];
@@ -30,10 +60,9 @@ public class Game{
         }
         return result;
     }
-    public int[] transformArray(int[] array){
-        int[] result = new int[array.length];
+    public int[] transformArray(int[] compressedArray){
+        int[] result = new int[compressedArray.length];
         int indexResult = 0;
-        int[] compressedArray = compressArray(array);
         System.arraycopy(compressedArray,0,result,0,compressedArray.length);
         for(int i=0;i<compressedArray.length-1 ;i++) {
             int currentElement = compressedArray[i];
@@ -53,7 +82,7 @@ public class Game{
         }
         return result;
     }
-    private int[] compressArray(int[] array){
+    public int[] compressArray(int[] array){
         int[] result = new int[array.length];
         int indexResult = 0;
         for(int i=0;i<array.length ;i++){
@@ -70,5 +99,11 @@ public class Game{
             }
             System.out.println();
         }
+    }
+    public int[] reverseArray(int[] array){
+        int[] result = new int [array.length];
+        for(int i=0,j=array.length-1;i<result.length;i++,j--)
+            result[i]=array[j];
+        return result;
     }
 }
