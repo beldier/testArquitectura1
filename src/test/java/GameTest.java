@@ -1,6 +1,9 @@
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class GameTest {
     private Game game1;
@@ -20,6 +23,9 @@ public class GameTest {
         game1 = new Game(matrix1);
         game2 = new Game(matrix2);
     }
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
     @Test
     public void playUp_Matrix1_TransformedMatrix(){
         int[][] expectedResult= new int[][]{{1,8,4,2},
@@ -56,8 +62,12 @@ public class GameTest {
         int[][] transformedMatrix = game2.play('S');
         Assert.assertArrayEquals(expectedResult,transformedMatrix);
     }
-
-
+    @Test(expected = UnsupportedOperationException.class)
+    public void play_UnknownCommand_NotImplementedException(){
+        game2.play('Z');
+        exceptionRule.expect(UnsupportedOperationException.class);
+        exceptionRule.expectMessage("Order not recognised");
+    }
 
     @Test
     public void GetColumn_ColumnNumber_MatrixColumn(){

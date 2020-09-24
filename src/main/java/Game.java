@@ -1,3 +1,5 @@
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.util.Arrays;
 
 public class Game{
@@ -7,9 +9,9 @@ public class Game{
     }
     public int[][] play(char order){
         switch (order){
-            case 'W':playUp(order);break;
-            case 'S':playDown(order);break;
-
+            case 'W':playUp();break;
+            case 'S':playDown();break;
+                default: throw new UnsupportedOperationException("Order not recognised");
         }
         return this.matrix;
     }
@@ -23,7 +25,7 @@ public class Game{
         }
         return result;
     }
-    private int[][] playUp(char order) {
+    private int[][] playUp() {
         int columnAmount = matrix[0].length;
         for (int columnNumber = 0; columnNumber < columnAmount; columnNumber++) {
             int[] column = getColumn(columnNumber);
@@ -34,7 +36,7 @@ public class Game{
         return this.matrix;
     }
 
-    private int[][] playDown(char order){
+    private int[][] playDown(){
         int columnAmount = matrix[0].length;
         for(int columnNumber=0; columnNumber<columnAmount;columnNumber++){
             int[] column = getColumn(columnNumber);
