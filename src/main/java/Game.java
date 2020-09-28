@@ -11,10 +11,27 @@ public class Game{
         switch (order){
             case 'W':playUp();break;
             case 'S':playDown();break;
-                default: throw new UnsupportedOperationException("Order not recognised");
+            case 'A':playLeft();break;
+            case 'D':playDown();break;
+            default: throw new UnsupportedOperationException("Order not recogneised");
         }
         return this.matrix;
     }
+    private int[][] playLeft() {
+        int rowsAmount = matrix.length;
+        for (int rowNumber = 0; rowNumber < rowsAmount; rowNumber++) {
+            int[] row = matrix[rowNumber];
+            int[] compressed = compressArray(row);
+            row = transformArray(compressed);
+            replaceRow(row, rowNumber);
+        }
+        return this.matrix;
+    }
+
+    private void replaceRow(int[] row, int rowNumber) {
+        this.matrix[rowNumber]=row;
+    }
+
     public int[] compressArrayRight(int[] array){
         int[] result = new int[array.length];
         int indexResult = array.length-1;
@@ -64,24 +81,24 @@ public class Game{
     }
     public int[] transformArray(int[] compressedArray){
         int[] result = new int[compressedArray.length];
+        compressedArray = Arrays.copyOf(compressedArray, compressedArray.length + 1);
+        compressedArray[compressedArray.length-1] = -2;
         int indexResult = 0;
-        System.arraycopy(compressedArray,0,result,0,compressedArray.length);
-        for(int i=0;i<compressedArray.length-1 ;i++) {
+        int lastElement = compressedArray[0];
+        for(int i=1;i<compressedArray.length;i++) {
             int currentElement = compressedArray[i];
-            int nextElement = compressedArray[i + 1];
-            if (currentElement == nextElement) {
-                result[i] = 0;
-                result[i + 1] = 0;
-                result[indexResult] = currentElement + nextElement;
-                i++;
+            if (currentElement == lastElement) {
+                result[indexResult ++] = currentElement + lastElement;
+                lastElement=-1;
             }
-            indexResult++;
+            else{
+                if(lastElement!=-1)
+                    result[indexResult++] = lastElement;
+                lastElement = currentElement;
+            }
         }
-        int lastElement=result[result.length-1];
-        if(lastElement!=0 && indexResult < compressedArray.length-1 ){
+        if(lastElement == -1  )
             result[indexResult]=lastElement;
-            result[result.length-1]=0;
-        }
         return result;
     }
     public int[] compressArray(int[] array){

@@ -8,8 +8,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class GameTest {
     private Game game1;
     private Game game2;
+    private Game game3;
     private int matrix1[][];
     private int matrix2[][];
+    private int matrix3[][];
     @Before
     public void setUp(){
         matrix1 = new int[][]{{1,4,0,2},
@@ -20,8 +22,13 @@ public class GameTest {
                              {2,2,0,3},
                              {3,2,0,2},
                              {4,4,0,0}};
+        matrix3 = new int[][]{{1,1,0,2},
+                             {4,0,0,4},
+                             {4,4,0,8},
+                             {2,2,2,2}};
         game1 = new Game(matrix1);
         game2 = new Game(matrix2);
+        game3 = new Game(matrix3);
     }
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -75,6 +82,15 @@ public class GameTest {
         int[] column = game1.getColumn(columnNumber);
         int [] expectedResult = {1,2,3,3};
         Assert.assertArrayEquals(expectedResult,column);
+    }
+    @Test
+    public void playLeft_Matrix3_TransformedMatrix(){
+        int[][] expectedResult= new int[][]{{2,2,0,0},
+                                            {8,0,0,0},
+                                            {8,8,0,0},
+                                            {4,4,0,0}};
+        int[][] transformedMatrix = game3.play('A');
+        Assert.assertArrayEquals(expectedResult,transformedMatrix);
     }
     @Test
     public void GetColumn_ColumnNumber_MatrixZeroColumn(){
