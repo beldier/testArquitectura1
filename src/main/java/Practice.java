@@ -1,12 +1,18 @@
 import java.util.Arrays;
+import java.util.Random;
 
 public class Practice {
     public static void main(String args[]){
-        int[] array =  {1,2,3,4};
-         int[] shiftedArray = Arrays.stream(array)
-                .skip(4)
-                .toArray();
-        System.out.println(Arrays.toString(shiftedArray));
+        System.out.println(new Random().nextInt(4));
+        System.out.println(new Random().nextInt(4));
+        System.out.println(new Random().nextInt(4));
+        System.out.println(new Random().nextInt(4));
+        System.out.println(new Random().nextInt(4));
+//        int[] array =  {1,2,3,4};
+//         int[] shiftedArray = Arrays.stream(array)
+//                .skip(4)
+//                .toArray();
+//        System.out.println(Arrays.toString(shiftedArray));
     }
     public static int[] transformArray(int[] array){
         int[] result = new int[array.length+1];
