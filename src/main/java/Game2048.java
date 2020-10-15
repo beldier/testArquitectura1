@@ -1,58 +1,31 @@
-
 import java.util.Arrays;
 import java.util.Random;
 
-public class Game{
+class Game2048 implements G2048 {
+
+
     private int [][] matrix;
-    private static int RANDOM_NUMBER = 2;
+    private static int NUMBER = 2;
+    private static int GOAL= 32;
+    private static int ROW_SIZE=4;
+    private static int COLUMN_SIZE=4;
 
-
-    public Game(int[][] matrix){
-        this.matrix=matrix;
-    }
-
-    public Game(){
+    public Game2048(){
         this.matrix = new int[4][4];
-        setRandomNumber();
+        setNumberTwoInRandomPosition();
     }
-    private void setRandomNumber(){
+    public Game2048(int[][] matrix){
+        this.matrix = matrix;
+    }
+
+    private void setNumberTwoInRandomPosition(){
         int i = new Random().nextInt(4);
         int j = new Random().nextInt(4);
-        this.matrix[i][j] = RANDOM_NUMBER;
+        this.matrix[i][j] = NUMBER;
     }
-    public int[][] play(char order){
-        switch (order){
-            case 'W':playUp();break;
-            case 'S':playDown();break;
-            case 'A':playLeft();break;
-            case 'D':playRight();break;
-            default: throw new UnsupportedOperationException("Order not recognized");
-        }
-        return this.matrix;
-    }
-    private int[][] playLeft() {
-        int rowsAmount = matrix.length;
-        for (int rowNumber = 0; rowNumber < rowsAmount; rowNumber++) {
-            int[] row = matrix[rowNumber];
-            int[] compressed = compressArray(row);
-            row = transformArray(compressed);
-            replaceRow(row, rowNumber);
-        }
-        return this.matrix;
-    }
-    private int[][] playRight() {
-        int rowsAmount = matrix.length;
-        for (int rowNumber = 0; rowNumber < rowsAmount; rowNumber++) {
-            int[] row = matrix[rowNumber];
-            row = reverseArray(row);
-            int[] compressed = compressArray(row);
-            row = transformArray(compressed);
-            row = reverseArray(row);
-            replaceRow(row, rowNumber);
-        }
-        return this.matrix;
-    }
-    private int[][] playUp() {
+
+    @Override
+    public void moveUp() {
         int columnAmount = matrix[0].length;
         for (int columnNumber = 0; columnNumber < columnAmount; columnNumber++) {
             int[] column = getColumn(columnNumber);
@@ -60,11 +33,12 @@ public class Game{
             column = transformArray(compressed);
             replaceColumn(column, columnNumber);
         }
-        return this.matrix;
+        setNumberTwoInRandomPosition();
+
     }
 
-
-    private int[][] playDown(){
+    @Override
+    public void moveDown() {
         int columnAmount = matrix[0].length;
         for(int columnNumber=0; columnNumber<columnAmount;columnNumber++){
             int[] column = getColumn(columnNumber);
@@ -73,8 +47,60 @@ public class Game{
             column = compressArrayRight(column);
             replaceColumn(column, columnNumber);
         }
-        return this.matrix;
+        setNumberTwoInRandomPosition();
+
     }
+
+    @Override
+    public void moveLeft() {
+        int rowsAmount = matrix.length;
+        for (int rowNumber = 0; rowNumber < rowsAmount; rowNumber++) {
+            int[] row = matrix[rowNumber];
+            int[] compressed = compressArray(row);
+            row = transformArray(compressed);
+            replaceRow(row, rowNumber);
+        }
+        setNumberTwoInRandomPosition();
+
+    }
+
+    @Override
+    public void moveRight() {
+        int rowsAmount = matrix.length;
+        for (int rowNumber = 0; rowNumber < rowsAmount; rowNumber++) {
+            int[] row = matrix[rowNumber];
+            row = reverseArray(row);
+            int[] compressed = compressArray(row);
+            row = transformArray(compressed);
+            row = reverseArray(row);
+            replaceRow(row, rowNumber);
+        }
+        setNumberTwoInRandomPosition();
+
+    }
+
+    @Override
+    public boolean winGame() {
+        for(int i = 0;i<ROW_SIZE;i++){
+            for(int j=0;j< COLUMN_SIZE;j++)
+                if(this.matrix[i][j]==GOAL)
+                    return true;
+        }
+        return false;
+
+    }
+
+    @Override
+    public boolean lostGame() {
+        for(int i = 0;i<ROW_SIZE;i++){
+            for(int j=0;j< COLUMN_SIZE;j++)
+                if(this.matrix[i][j]==0)
+                    return false;
+        }
+        return true;
+    }
+
+
 
     private void replaceRow(int[] row, int rowNumber) {
         this.matrix[rowNumber]=row;
@@ -135,7 +161,7 @@ public class Game{
             if(currentElement !=0)
                 result[indexResult++]=currentElement;
         }
-         return result;
+        return result;
     }
     public int[] reverseArray(int[] array){
         int[] result = new int [array.length];
@@ -144,37 +170,16 @@ public class Game{
         return result;
     }
 
-    public boolean isLeft(){
-        for(int i=0;i<matrix.length;i++){
-            if(matrix[i][0] == RANDOM_NUMBER)
-                return true;
+    @Override
+    public String toString() {
+        String ans = "";
+        for(int i = 0;i<ROW_SIZE;i++){
+            for(int j=0;j< COLUMN_SIZE;j++) {
+                ans+=this.matrix[i][j]+" ";
+            }
+            ans+="\n";
         }
-        return false;
+        return ans;
     }
-    public boolean isRight(){
-        int lastColumnIndex = matrix[0].length - 1;
-        for(int i=0;i<matrix.length;i++){
-            if(matrix[i][lastColumnIndex] == RANDOM_NUMBER)
-                return true;
-        }
-        return false;
-    }
-    public boolean isUp(){
-        for(int j=0;j<matrix.length;j++){
-            if(matrix[0][j] == RANDOM_NUMBER)
-                return true;
-        }
-        return false;
-    }
-    public boolean isDown(){
-        int lastRowIndex = matrix.length - 1;
-        for(int j = 0; j < matrix.length; j++){
-            if(matrix[lastRowIndex][j] == RANDOM_NUMBER)
-                return true;
-        }
-        return false;
-    }
-    public boolean compareMatrix(int[][] mat){
-        return Arrays.deepEquals(this.matrix,mat);
-    }
+
 }

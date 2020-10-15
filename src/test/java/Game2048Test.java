@@ -1,16 +1,14 @@
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-public class GameTest {
-    private Game game1;
-    private Game game2;
-    private Game game3;
-    private Game game4;
-    private Game game5;
+public class Game2048Test {
+    private Game2048 game1;
+    private Game2048 game2;
+    private Game2048 game3;
+    private Game2048 game4;
+    private Game2048 game5;
+    private Game2048 game6;
     private int matrix1[][];
     private int matrix2[][];
     private int matrix3[][];
@@ -33,75 +31,16 @@ public class GameTest {
                              {4,4,2,4},
                              {4,3,2,1},
                              {2,2,2,2}};
-        game1 = new Game(matrix1);
-        game2 = new Game(matrix2);
-        game3 = new Game(matrix3);
-        game4 = new Game(matrix4);
+        game1 = new Game2048(matrix1);
+        game2 = new Game2048(matrix2);
+        game3 = new Game2048(matrix3);
+        game4 = new Game2048(matrix4);
 
-        game5 = new Game();
-    }
-    @Test
-    public void isLeftRandomNumberInFirstColumn(){
-        game5.play('A');
-        Assert.assertTrue(game5.isLeft());
-    }
-    @Test
-    public void isRightRandomNumberInLastColumn(){
-        game5.play('D');
-        Assert.assertTrue(game5.isRight());
-    }
-    @Test
-    public void isUpRandomNumberInFirstRow(){
-        game5.play('W');
-        Assert.assertTrue(game5.isUp());
-    }
-    @Test
-    public void isDownRandomNumberInLastRow(){
-        game5.play('S');
-        Assert.assertTrue(game5.isDown());
+        game5 = new Game2048();
     }
 
 
-    @Test
-    public void playUp_Matrix1_TransformedMatrix(){
-        int[][] expectedResult= new int[][]{{1,8,4,2},
-                                            {2,8,8,3},
-                                            {6,0,0,2},
-                                            {0,0,0,0}};
-        int[][] transformedMatrix = game1.play('W');
-        Assert.assertTrue(game1.compareMatrix(expectedResult));
-    }
-    @Test
-    public void playUp_Matrix2_TransformedMatrix(){
-        int[][] expectedResult= new int[][]{{1,1,0,2},
-                                            {2,4,0,3},
-                                            {3,4,0,2},
-                                            {4,0,0,0}};
-        int[][] transformedMatrix = game2.play('W');
-        Assert.assertTrue(game2.compareMatrix(expectedResult));
-    }
-    @Test
-    public void playDown_Matrix1_TransformedMatrix(){
-        int[][] expectedResult= new int[][]{{0,0,0,0},
-                                            {1,0,0,2},
-                                            {2,8,4,3},
-                                            {6,8,8,2}};
-        int[][] transformedMatrix = game1.play('S');
-        Assert.assertTrue(game1.compareMatrix(expectedResult));
-    }
-    @Test
-    public void playDown_Matrix2_TransformedMatrix(){
-        int[][] expectedResult= new int[][]{{1,0,0,0},
-                                            {2,1,0,2},
-                                            {3,4,0,3},
-                                            {4,4,0,2}};
-        int[][] transformedMatrix = game2.play('S');
-        Assert.assertTrue(game2.compareMatrix(expectedResult));
-    }
-    @Test(expected = UnsupportedOperationException.class)
-    public void play_UnknownCommand_NotImplementedException(){
-        game2.play('Z');
-    }
+
 
     @Test
     public void GetColumn_ColumnNumber_MatrixColumn(){
@@ -110,24 +49,7 @@ public class GameTest {
         int [] expectedResult = {1,2,3,3};
         Assert.assertArrayEquals(expectedResult,column);
     }
-    @Test
-    public void playLeft_Matrix3_TransformedMatrix(){
-        int[][] expectedResult= new int[][]{{2,2,0,0},
-                                            {8,0,0,0},
-                                            {8,8,0,0},
-                                            {4,4,0,0}};
-        int[][] transformedMatrix = game3.play('A');
-        Assert.assertArrayEquals(expectedResult,transformedMatrix);
-    }
-    @Test
-    public void playRight_Matrix4_TransformedMatrix(){
-        int[][] expectedResult= new int[][]{{0,0,1,2},
-                                            {0,8,2,4},
-                                            {4,3,2,1},
-                                            {0,0,4,4}};
-        int[][] transformedMatrix = game4.play('D');
-        Assert.assertArrayEquals(expectedResult,transformedMatrix);
-    }
+
     @Test
     public void GetColumn_ColumnNumber_MatrixZeroColumn(){
         int columnNumber = 2;
