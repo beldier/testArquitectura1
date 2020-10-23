@@ -165,8 +165,9 @@ class Game2048 implements G2048 {
     }
     public int[] reverseArray(int[] array){
         int[] result = new int [array.length];
-        for(int i=0,j=array.length-1;i<result.length;i++,j--)
+        for(int i=0, j=array.length-1 ; i < result.length ; i++, j--){
             result[i]=array[j];
+        }
         return result;
     }
 
